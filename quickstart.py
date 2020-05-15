@@ -1,37 +1,33 @@
-# imports
 from instapy import InstaPy
 from instapy import smart_run
 
-# login credentials
-insta_username = ''
-insta_password = ''
+# get a session!
+session = InstaPy(username='cly.dez', password='')
 
-comments = ['Nice shot! @{}',
-        'I love your profile! @{}',
-        'Your feed is an inspiration :thumbsup:',
-        'Just incredible :open_mouth:',
-        'What camera did you use @{}?',
-        'Love your posts @{}',
-        'Looks awesome @{}',
-        'Getting inspired by you @{}',
-        ':raised_hands: Yes!',
-        'I can feel your passion @{} :muscle:']
+photo_comments = []
 
-# get an InstaPy session!
-# set headless_browser=True to run InstaPy in the background
-session = InstaPy(username=insta_username,
-                  password=insta_password,
-                  headless_browser=False)
-
+# let's go! :>
 with smart_run(session):
-  """ Activity flow """		
-  # general settings		
-  session.set_dont_include(["friend1", "friend2", "friend3"])		
-  
-  # activity		
-  session.like_by_tags(["natgeo"], amount=10)
+    # settings
+    session.set_user_interact(amount=3, randomize=True, percentage=100,
+                              media='Photo')
+    session.set_relationship_bounds(enabled=True,
+                                    potency_ratio=None,
+                                    delimit_by_numbers=True,
+                                    max_followers=3000,
+                                    max_following=1500,
+                                    min_followers=50,
+                                    min_following=50)
+    session.set_simulation(enabled=True, percentage=66)
+    session.set_do_like(enabled=True, percentage=69)
+    session.set_ignore_users([])
+    session.set_do_comment(enabled=False, percentage=35)
+    session.set_do_follow(enabled=True, percentage=25, times=1)
+    session.set_comments(photo_comments)
+    session.set_ignore_if_contains([])
+    session.set_action_delays(enabled=True, like=40)
+    session.set_action_delays(enabled=True, like=3, comment=5, follow=100, unfollow=40)
+    session.set_skip_users(skip_private=True, private_percentage=100, skip_no_profile_pic=False, no_profile_pic_percentage=100, skip_business=True, business_percentage=100)
 
-  # Joining Engagement Pods
-  session.set_do_comment(enabled=True, percentage=35)
-  session.set_comments(comments)
-  session.join_pods(topic='sports', engagement_mode='no_comments')
+    # activity
+    session.interact_user_followers(['bhanoob','kelum_devanarayana'], amount=340)
